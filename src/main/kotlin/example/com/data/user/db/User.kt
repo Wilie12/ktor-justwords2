@@ -7,6 +7,6 @@ data class User(
     val username: String,
     val email: String,
     val password: String,
-    val sat: String,
+    val salt: String,
     @BsonId val id: ObjectId = ObjectId()
 )
