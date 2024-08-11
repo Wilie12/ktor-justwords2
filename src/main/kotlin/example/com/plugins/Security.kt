@@ -1,27 +1,31 @@
 package example.com.plugins
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
+import example.com.data.user.token.TokenConfig
+import example.com.data.user.token.TokenService
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import org.koin.core.qualifier.named
+import org.koin.ktor.ext.inject
 
 fun Application.configureSecurity() {
-    // Please read the jwt property from the config file if you are using EngineMain
-    val jwtAudience = "jwt-audience"
-    val jwtDomain = "https://jwt-provider-domain/"
-    val jwtRealm = "ktor sample app"
-    val jwtSecret = "secret"
+
+    val tokenConfig by inject<TokenConfig>(named("accessToken"))
+    val tokenService by inject<TokenService>()
+
+    val jwtAudience = "users"
+    val jwtRealm = "ktor-justwords2-server"
     authentication {
-        jwt {
+        jwt("accessToken") {
             realm = jwtRealm
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtDomain)
-                    .build()
-            )
+            verifier(tokenService.verify(tokenConfig, "accessToken"))
+            validate { credential ->
+                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+            }
+        }
+        jwt("refreshToken") {
+            realm = jwtRealm
+            verifier(tokenService.verify(tokenConfig, "refreshToken"))
             validate { credential ->
                 if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
             }
