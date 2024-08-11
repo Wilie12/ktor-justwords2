@@ -1,6 +1,8 @@
 package example.com.plugins
 
 import example.com.auth.AuthController
+import example.com.auth.accessToken
+import example.com.auth.login
 import example.com.auth.register
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,5 +18,7 @@ fun Application.configureRouting(authController: AuthController) {
     }
     routing {
         register(authController = authController)
+        login(authController = authController)
+        accessToken(authController = authController)
     }
 }

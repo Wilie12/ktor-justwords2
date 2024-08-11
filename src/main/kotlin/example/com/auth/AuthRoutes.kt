@@ -4,13 +4,12 @@ import example.com.util.DataError
 import example.com.util.Result
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.register(
-    authController: AuthController
-) {
+fun Route.register(authController: AuthController) {
     post("/register") {
         val request = runCatching { call.receive<RegisterRequest>() }.getOrElse {
             call.respond(HttpStatusCode.BadRequest)
@@ -42,6 +41,9 @@ fun Route.register(
             }
         }
     }
+}
+
+fun Route.login(authController: AuthController) {
     post("/login") {
         val request = runCatching { call.receive<LoginRequest>() }.getOrElse {
             call.respond(HttpStatusCode.BadRequest)
@@ -72,6 +74,41 @@ fun Route.register(
                     status = HttpStatusCode.OK,
                     message = result.data
                 )
+            }
+        }
+    }
+}
+
+fun Route.accessToken(authController: AuthController) {
+    authenticate("refreshToken") {
+        post("/accessToken") {
+            val request = runCatching { call.receive<AccessTokenRequest>() }.getOrElse {
+                call.respond(HttpStatusCode.BadRequest)
+                return@post
+            }
+
+            val result = authController.accessToken(
+                refreshToken = request.refreshToken,
+                userId = request.userId
+            )
+
+            when (result) {
+                is Result.Error -> {
+                    when (result.error) {
+                        DataError.Auth.INVALID_CREDENTIALS -> {
+                            call.respond(HttpStatusCode.Unauthorized, "Invalid user credentials")
+                        }
+                        else -> {
+                            call.respond(HttpStatusCode.BadRequest, "Unknown Error")
+                        }
+                    }
+                }
+                is Result.Success -> {
+                    call.respond(
+                        status = HttpStatusCode.OK,
+                        message = result.data
+                    )
+                }
             }
         }
     }

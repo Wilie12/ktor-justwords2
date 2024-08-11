@@ -84,6 +84,41 @@ class AuthController(
         return Result.Success(loginResponse)
     }
 
+    suspend fun accessToken(
+        refreshToken: String,
+        userId: String
+    ): Result<AccessTokenResponse, DataError.Auth> {
+        val user = userDataSource.getUserById(userId)
+            ?: return Result.Error(DataError.Auth.USER_DOES_NOT_EXISTS)
+
+        val tokenUser = refreshTokenRepository.getUserById(userId)
+            ?: return Result.Error(DataError.Auth.USER_DOES_NOT_EXISTS)
+
+        if (refreshToken != tokenUser.token) {
+            return Result.Error(DataError.Auth.INVALID_CREDENTIALS)
+        }
+
+        val accessToken = refreshAccessToken(userId)
+
+        return Result.Success(AccessTokenResponse(accessToken))
+    }
+
+    private fun refreshAccessToken(
+        userId: String
+    ): String {
+        return tokenService.generate(
+            config = accessTokenConfig,
+            TokenClaim(
+                name = "userId",
+                value = userId
+            ),
+            TokenClaim(
+                name = "tokenType",
+                value = "accessToken"
+            )
+        )
+    }
+
     private  fun generateTokens(user: User): LoginResponse {
         val accessToken = tokenService.generate(
             config = accessTokenConfig,
