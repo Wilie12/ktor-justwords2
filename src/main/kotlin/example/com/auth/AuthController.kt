@@ -1,6 +1,6 @@
 package example.com.auth
 
-import example.com.data.user.db.User
+import example.com.data.user.db.entity.User
 import example.com.data.user.db.UserDataSource
 import example.com.data.user.hashing.HashingService
 import example.com.data.user.hashing.SaltedHash

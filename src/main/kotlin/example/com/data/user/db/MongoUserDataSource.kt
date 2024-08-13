@@ -1,10 +1,11 @@
 package example.com.data.user.db
 
+import example.com.data.user.db.entity.User
 import org.bson.types.ObjectId
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
-class MongoDataSource(
+class MongoUserDataSource(
     db: CoroutineDatabase
 ): UserDataSource {
 
