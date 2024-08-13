@@ -1,7 +1,7 @@
 package example.com.di
 
 import example.com.auth.AuthController
-import example.com.data.user.db.MongoDataSource
+import example.com.data.user.db.MongoUserDataSource
 import example.com.data.user.db.UserDataSource
 import example.com.data.user.hashing.HashingService
 import example.com.data.user.hashing.SHA256HashingService
@@ -57,7 +57,7 @@ val appModule = module {
     }
 
     singleOf(::MongoRefreshTokenRepository).bind<RefreshTokenRepository>()
-    singleOf(::MongoDataSource).bind<UserDataSource>()
+    singleOf(::MongoUserDataSource).bind<UserDataSource>()
     singleOf(::SHA256HashingService).bind<HashingService>()
     singleOf(::JWTTokenService).bind<TokenService>()
 }
