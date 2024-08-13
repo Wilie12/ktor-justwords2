@@ -41,7 +41,7 @@ class AuthController(
         val user = User(
             username = username,
             email = email,
-            password = password,
+            password = saltedHash.hash,
             salt = saltedHash.salt
         )
 
