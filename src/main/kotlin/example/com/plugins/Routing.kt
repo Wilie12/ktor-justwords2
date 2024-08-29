@@ -4,10 +4,7 @@ import example.com.auth.AuthController
 import example.com.auth.accessToken
 import example.com.auth.login
 import example.com.auth.register
-import example.com.words.WordsController
-import example.com.words.books
-import example.com.words.sets
-import example.com.words.words
+import example.com.words.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -34,6 +31,7 @@ fun Application.configureRouting() {
         // Words
         books(wordsController = wordsController)
         sets(wordsController = wordsController)
+        setsById(wordsController = wordsController)
         words(wordsController = wordsController)
     }
 }

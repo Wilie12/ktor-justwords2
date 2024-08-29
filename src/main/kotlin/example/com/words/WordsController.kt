@@ -17,8 +17,8 @@ class WordsController(
         )
     }
 
-    suspend fun setsById(bookId: String): Result<WordSetResponse, Error> {
-        val sets = wordDataSource.getSets(bookId)
+    suspend fun sets(): Result<WordSetResponse, Error> {
+        val sets = wordDataSource.getSets()
         return Result.Success(
             WordSetResponse(
                 sets = sets.map { it.toWordSetSerializable() }

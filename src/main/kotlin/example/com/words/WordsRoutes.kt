@@ -4,7 +4,6 @@ import example.com.util.Result
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -27,19 +26,36 @@ fun Route.books(wordsController: WordsController) {
 fun Route.sets(wordsController: WordsController) {
     authenticate("accessToken") {
         get("/sets") {
-            val request = runCatching { call.receive<WordSetRequest>() }.getOrElse {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
-
-            when (val result = wordsController.setsById(request.bookId)) {
+            when (val result = wordsController.sets()) {
+                is Result.Error -> Unit
                 is Result.Success -> {
                     call.respond(
                         status = HttpStatusCode.OK,
                         message = result.data
                     )
                 }
+            }
+        }
+    }
+}
+
+fun Route.setsById(wordsController: WordsController) {
+    authenticate("accessToken") {
+        get("/setsById") {
+            when (val result = wordsController.sets()) {
                 is Result.Error -> Unit
+                is Result.Success -> {
+
+                    val sets = result.data.sets
+                        .filter { it.bookId == call.request.queryParameters["bookId"] }
+
+                    call.respond(
+                        status = HttpStatusCode.OK,
+                        message = WordSetResponse(
+                            sets = sets
+                        )
+                    )
+                }
             }
         }
     }
@@ -48,12 +64,9 @@ fun Route.sets(wordsController: WordsController) {
 fun Route.words(wordsController: WordsController) {
     authenticate("accessToken") {
         get("/words") {
-            val request = runCatching { call.receive<WordRequest>() }.getOrElse {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
+            val setId = call.request.queryParameters["setId"] ?: ""
 
-            when (val result = wordsController.wordsFromSet(request.setId)) {
+            when (val result = wordsController.wordsFromSet(setId)) {
                 is Result.Success -> {
                     call.respond(
                         status = HttpStatusCode.OK,

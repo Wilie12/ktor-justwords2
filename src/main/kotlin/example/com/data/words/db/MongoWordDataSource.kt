@@ -18,10 +18,8 @@ class MongoWordDataSource(
         return books.find().toList()
     }
 
-    override suspend fun getSets(bookId: String): List<WordSet> {
-        val equalComparison = Filters.eq(WordSet::bookId.name, bookId)
-
-        return sets.find(equalComparison).toList()
+    override suspend fun getSets(): List<WordSet> {
+        return sets.find().toList()
     }
 
     override suspend fun getWordsFromSet(setId: String): List<Word> {
