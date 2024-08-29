@@ -3,6 +3,9 @@ package example.com.words
 import example.com.data.words.db.entity.Book
 import example.com.data.words.db.entity.Word
 import example.com.data.words.db.entity.WordSet
+import example.com.words.entity.BookSerializable
+import example.com.words.entity.WordSerializable
+import example.com.words.entity.WordSetSerializable
 
 fun Book.toBookSerializable(): BookSerializable {
     return BookSerializable(

@@ -7,6 +7,6 @@ import example.com.data.words.db.entity.WordSet
 interface WordDataSource {
 
     suspend fun getBooks(): List<Book>
-    suspend fun getSets(bookId: String): List<WordSet>
+    suspend fun getSets(): List<WordSet>
     suspend fun getWordsFromSet(setId: String): List<Word>
 }

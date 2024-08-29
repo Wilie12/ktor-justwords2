@@ -4,7 +4,6 @@ import example.com.util.DataError
 import example.com.util.Result
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -28,14 +27,17 @@ fun Route.register(authController: AuthController) {
                     DataError.Auth.INVALID_CREDENTIALS -> {
                         call.respond(HttpStatusCode.BadRequest, "Invalid credentials")
                     }
+
                     DataError.Auth.USER_EXISTS -> {
                         call.respond(HttpStatusCode.Conflict, "User already exists")
                     }
+
                     else -> {
                         call.respond(HttpStatusCode.BadRequest, "Unknown Error")
                     }
                 }
             }
+
             is Result.Success -> {
                 call.respond(HttpStatusCode.OK, "User successfully registered")
             }
@@ -61,14 +63,17 @@ fun Route.login(authController: AuthController) {
                     DataError.Auth.INVALID_CREDENTIALS -> {
                         call.respond(HttpStatusCode.Unauthorized, "Wrong email or password")
                     }
+
                     DataError.Auth.USER_DOES_NOT_EXISTS -> {
                         call.respond(HttpStatusCode.BadRequest, "User with given email doesn't exists")
                     }
+
                     else -> {
                         call.respond(HttpStatusCode.BadRequest, "Unknown Error")
                     }
                 }
             }
+
             is Result.Success -> {
                 call.respond(
                     status = HttpStatusCode.OK,
@@ -80,35 +85,35 @@ fun Route.login(authController: AuthController) {
 }
 
 fun Route.accessToken(authController: AuthController) {
-    authenticate("refreshToken") {
-        post("/accessToken") {
-            val request = runCatching { call.receive<AccessTokenRequest>() }.getOrElse {
-                call.respond(HttpStatusCode.BadRequest)
-                return@post
-            }
+    post("/accessToken") {
+        val request = runCatching { call.receive<AccessTokenRequest>() }.getOrElse {
+            call.respond(HttpStatusCode.BadRequest)
+            return@post
+        }
 
-            val result = authController.accessToken(
-                refreshToken = request.refreshToken,
-                userId = request.userId
-            )
+        val result = authController.accessToken(
+            refreshToken = request.refreshToken,
+            userId = request.userId
+        )
 
-            when (result) {
-                is Result.Error -> {
-                    when (result.error) {
-                        DataError.Auth.INVALID_CREDENTIALS -> {
-                            call.respond(HttpStatusCode.Unauthorized, "Invalid user credentials")
-                        }
-                        else -> {
-                            call.respond(HttpStatusCode.BadRequest, "Unknown Error")
-                        }
+        when (result) {
+            is Result.Error -> {
+                when (result.error) {
+                    DataError.Auth.INVALID_CREDENTIALS -> {
+                        call.respond(HttpStatusCode.Unauthorized, "Invalid user credentials")
+                    }
+
+                    else -> {
+                        call.respond(HttpStatusCode.BadRequest, "Unknown Error")
                     }
                 }
-                is Result.Success -> {
-                    call.respond(
-                        status = HttpStatusCode.OK,
-                        message = result.data
-                    )
-                }
+            }
+
+            is Result.Success -> {
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = result.data
+                )
             }
         }
     }

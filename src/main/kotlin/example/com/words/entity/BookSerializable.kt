@@ -1,4 +1,4 @@
-package example.com.words
+package example.com.words.entity
 
 import kotlinx.serialization.Serializable
 
