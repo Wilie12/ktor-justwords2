@@ -21,7 +21,7 @@ class MongoUserDataSource(
         return users.findOne(User::id eq ObjectId(userId))
     }
 
-    override suspend fun insertUser(user: User): Boolean {
+    override suspend fun insertUser(user: User, username: String): Boolean {
         val wasAcknowledged = users.insertOne(user).wasAcknowledged()
         val wasInfoAcknowledged = usersInfo.insertOne(
             UserInfo(
@@ -30,7 +30,7 @@ class MongoUserDataSource(
                 currentGoal = 0,
                 dailyGoal = 4,
                 lastPlayedTimestamp = "",
-                userName = user.username,
+                username = username,
                 userId = user.id
             )
         ).wasAcknowledged()
