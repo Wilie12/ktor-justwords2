@@ -12,6 +12,7 @@ import example.com.data.user.token.refresh.MongoRefreshTokenRepository
 import example.com.data.user.token.refresh.RefreshTokenRepository
 import example.com.data.words.db.MongoWordDataSource
 import example.com.data.words.db.WordDataSource
+import example.com.user.UserController
 import example.com.words.WordsController
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
@@ -66,4 +67,6 @@ val appModule = module {
 
     singleOf(::MongoWordDataSource).bind<WordDataSource>()
     singleOf(::WordsController)
+
+    singleOf(::UserController)
 }

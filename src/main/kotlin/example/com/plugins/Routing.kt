@@ -4,6 +4,9 @@ import example.com.auth.AuthController
 import example.com.auth.accessToken
 import example.com.auth.login
 import example.com.auth.register
+import example.com.user.UserController
+import example.com.user.getUserInfo
+import example.com.user.updateUserInfo
 import example.com.words.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -21,6 +24,7 @@ fun Application.configureRouting() {
 
     val authController by inject<AuthController>()
     val wordsController by inject<WordsController>()
+    val userController by inject<UserController>()
 
     routing {
         // Auth
@@ -33,5 +37,7 @@ fun Application.configureRouting() {
         sets(wordsController = wordsController)
         setsById(wordsController = wordsController)
         words(wordsController = wordsController)
+        getUserInfo(userController = userController)
+        updateUserInfo(userController = userController)
     }
 }
