@@ -39,13 +39,12 @@ class AuthController(
         val saltedHash = hashingService.generateSaltedHash(password)
 
         val user = User(
-            username = username,
             email = email,
             password = saltedHash.hash,
             salt = saltedHash.salt
         )
 
-        if (!userDataSource.insertUser(user)) {
+        if (!userDataSource.insertUser(user, username)) {
             return Result.Error(DataError.Auth.USER_EXISTS)
         }
 
