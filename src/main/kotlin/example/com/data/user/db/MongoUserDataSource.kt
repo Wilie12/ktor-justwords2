@@ -5,6 +5,8 @@ import example.com.data.user.db.entity.UserInfo
 import org.bson.types.ObjectId
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class MongoUserDataSource(
     db: CoroutineDatabase
@@ -29,7 +31,8 @@ class MongoUserDataSource(
                 bestStreak = 0,
                 currentGoal = 0,
                 dailyGoal = 4,
-                lastPlayedTimestamp = "",
+                lastPlayedTimestamp = ZonedDateTime.now()
+                    .withZoneSameInstant(ZoneId.of("UTC")).toInstant().toString(),
                 username = username,
                 userId = user.id
             )
