@@ -12,11 +12,10 @@ fun UserWordHistory.toUserWordHistorySerializable(): UserWordHistorySerializable
         dateTimeUtc = dateTimeUtc,
         perfectGuessed = perfectGuessed,
         wordListSize = wordListSize,
-        id = id.toHexString(),
-        userId = userId
+        id = id.toHexString()
     )
 }
-fun UserWordHistorySerializable.toUserWordHistory(): UserWordHistory {
+fun UserWordHistorySerializable.toUserWordHistory(userId: String): UserWordHistory {
     return UserWordHistory(
         bookName = bookName,
         bookColor = bookColor,

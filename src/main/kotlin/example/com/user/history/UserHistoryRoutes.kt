@@ -1,23 +1,25 @@
-package example.com.user
+package example.com.user.history
 
 import example.com.util.DataError
 import example.com.util.Result
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getUserInfo(userController: UserController) {
+fun Route.userHistory(userHistoryController: UserHistoryController) {
     authenticate("accessToken") {
-        get("/getUserInfo") {
-            val userId = call.request.queryParameters["userId"] ?: ""
+        get("/userHistory") {
+            val principal = call.principal<JWTPrincipal>() ?: return@get
+            val userId = principal.payload.getClaim("userId").asString()
 
-            when (val result = userController.getUserInfo(userId)) {
+            when (val result = userHistoryController.getAllUserHistoryById(userId)) {
                 is Result.Error -> {
                     when (result.error) {
-                        DataError.Auth.USER_DOES_NOT_EXISTS -> {
+                        DataError.Insert.USER_DOES_NOT_EXISTS -> {
                             call.respond(HttpStatusCode.BadRequest, "User doesn't exists")
                         }
                         else -> {
@@ -36,26 +38,26 @@ fun Route.getUserInfo(userController: UserController) {
     }
 }
 
-fun Route.updateUserInfo(userController: UserController) {
+fun Route.postHistory(userHistoryController: UserHistoryController) {
     authenticate("accessToken") {
-        post("/updateUserInfo") {
-            val request = runCatching { call.receive<UserInfoRequest>() }.getOrElse {
+        post("/postUserHistory") {
+            val request = runCatching { call.receive<UserHistoryRequest>() }.getOrElse {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
 
-            val result = userController.updateUserInfo(
-                userInfo = request.userInfo
-            )
+            val principal = call.principal<JWTPrincipal>() ?: return@post
+            val userId = principal.payload.getClaim("userId").asString()
+            val userWordHistory = request.userWordHistorySerializable.toUserWordHistory(userId)
 
-            when (result) {
+            when (val result = userHistoryController.insertUserHistory(userWordHistory)) {
                 is Result.Error -> {
                     when (result.error) {
-                        DataError.Auth.USER_DOES_NOT_EXISTS -> {
+                        DataError.Insert.USER_DOES_NOT_EXISTS -> {
                             call.respond(HttpStatusCode.Unauthorized, "User doesn't exists")
                         }
-                        else -> {
-                            call.respond(HttpStatusCode.BadRequest, "Unknown Error")
+                        DataError.Insert.COULD_NOT_INSERT -> {
+                            call.respond(HttpStatusCode.Conflict, "Couldn't insert history")
                         }
                     }
                 }

@@ -11,6 +11,5 @@ data class UserWordHistorySerializable(
     val dateTimeUtc: String,
     val perfectGuessed: Int,
     val wordListSize: Int,
-    val id: String,
-    val userId: String
+    val id: String
 )

@@ -12,9 +12,9 @@ class UserHistoryController(
     private val userDataSource: UserDataSource
 ) {
 
-    suspend fun getAllUserHistoryById(userId: String): Result<UserHistoryResponse, DataError.Auth> {
+    suspend fun getAllUserHistoryById(userId: String): Result<UserHistoryResponse, DataError.Insert> {
         if (userDataSource.getUserById(userId) == null) {
-            return Result.Error(DataError.Auth.USER_DOES_NOT_EXISTS)
+            return Result.Error(DataError.Insert.USER_DOES_NOT_EXISTS)
         }
 
         val userHistoryItems = userHistoryDataSource.getAllUserHistoryById(userId)
