@@ -3,6 +3,8 @@ package example.com.di
 import example.com.auth.AuthController
 import example.com.data.user.db.MongoUserDataSource
 import example.com.data.user.db.UserDataSource
+import example.com.data.user.db.UserHistoryDataSource
+import example.com.data.user.db.entity.MongoUserHistoryDataSource
 import example.com.data.user.hashing.HashingService
 import example.com.data.user.hashing.SHA256HashingService
 import example.com.data.user.token.JWTTokenService
@@ -13,6 +15,7 @@ import example.com.data.user.token.refresh.RefreshTokenRepository
 import example.com.data.words.db.MongoWordDataSource
 import example.com.data.words.db.WordDataSource
 import example.com.user.UserController
+import example.com.user.history.UserHistoryController
 import example.com.words.WordsController
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
@@ -69,4 +72,6 @@ val appModule = module {
     singleOf(::WordsController)
 
     singleOf(::UserController)
+    singleOf(::MongoUserHistoryDataSource).bind<UserHistoryDataSource>()
+    singleOf(::UserHistoryController)
 }

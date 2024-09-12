@@ -8,4 +8,9 @@ sealed interface DataError: Error {
         USER_DOES_NOT_EXISTS,
         UNKNOWN
     }
+
+    enum class Insert: DataError {
+        USER_DOES_NOT_EXISTS,
+        COULD_NOT_INSERT
+    }
 }
