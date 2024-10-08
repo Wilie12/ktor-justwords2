@@ -12,7 +12,7 @@ class UserHistoryController(
     private val userDataSource: UserDataSource
 ) {
 
-    suspend fun getAllUserHistoryById(userId: String): Result<UserHistoryResponse, DataError.Insert> {
+    suspend fun getAllUserHistoryById(userId: String): Result<List<UserWordHistorySerializable>, DataError.Insert> {
         if (userDataSource.getUserById(userId) == null) {
             return Result.Error(DataError.Insert.USER_DOES_NOT_EXISTS)
         }
@@ -20,9 +20,7 @@ class UserHistoryController(
         val userHistoryItems = userHistoryDataSource.getAllUserHistoryById(userId)
 
         return Result.Success(
-            UserHistoryResponse(
-                userHistoryItems = userHistoryItems.map { it.toUserWordHistorySerializable() }
-            )
+            userHistoryItems.map { it.toUserWordHistorySerializable() }
         )
     }
 

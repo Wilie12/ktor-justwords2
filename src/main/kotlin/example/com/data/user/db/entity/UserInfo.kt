@@ -9,6 +9,7 @@ data class UserInfo(
     val currentGoal: Int,
     val dailyGoal: Int,
     val lastPlayedTimestamp: String,
+    val lastEditedTimestamp: String,
     val username: String,
     @BsonId val userId: ObjectId = ObjectId()
 )

@@ -10,6 +10,7 @@ fun UserInfo.toUserInfoSerializable(): UserInfoSerializable {
         currentGoal = currentGoal,
         dailyGoal = dailyGoal,
         lastPlayedTimestamp = lastPlayedTimestamp,
+        lastEditedTimestamp = lastEditedTimestamp,
         username = username,
         userId = userId.toHexString()
     )
@@ -22,6 +23,7 @@ fun UserInfoSerializable.toUserInfo(): UserInfo {
         currentGoal = currentGoal,
         dailyGoal = dailyGoal,
         lastPlayedTimestamp = lastPlayedTimestamp,
+        lastEditedTimestamp = lastEditedTimestamp,
         username = username,
         userId = ObjectId(userId)
     )
