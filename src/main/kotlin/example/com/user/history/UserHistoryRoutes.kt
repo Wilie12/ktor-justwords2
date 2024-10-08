@@ -41,14 +41,14 @@ fun Route.userHistory(userHistoryController: UserHistoryController) {
 fun Route.postHistory(userHistoryController: UserHistoryController) {
     authenticate("accessToken") {
         post("/postUserHistory") {
-            val request = runCatching { call.receive<UserHistoryRequest>() }.getOrElse {
+            val request = runCatching { call.receive<UserWordHistorySerializable>() }.getOrElse {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
 
             val principal = call.principal<JWTPrincipal>() ?: return@post
             val userId = principal.payload.getClaim("userId").asString()
-            val userWordHistory = request.userWordHistorySerializable.toUserWordHistory(userId)
+            val userWordHistory = request.toUserWordHistory(userId)
 
             when (val result = userHistoryController.insertUserHistory(userWordHistory)) {
                 is Result.Error -> {

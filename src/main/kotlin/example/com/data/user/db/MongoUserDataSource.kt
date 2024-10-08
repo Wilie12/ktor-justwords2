@@ -33,6 +33,8 @@ class MongoUserDataSource(
                 dailyGoal = 4,
                 lastPlayedTimestamp = ZonedDateTime.now()
                     .withZoneSameInstant(ZoneId.of("UTC")).toInstant().toString(),
+                lastEditedTimestamp = ZonedDateTime.now()
+                    .withZoneSameInstant(ZoneId.of("UTC")).toInstant().toString(),
                 username = username,
                 userId = user.id
             )

@@ -9,6 +9,7 @@ data class UserInfoSerializable(
     val currentGoal: Int,
     val dailyGoal: Int,
     val lastPlayedTimestamp: String,
+    val lastEditedTimestamp: String,
     val username: String,
     val userId: String
 )
