@@ -38,7 +38,7 @@ dependencies {
 
     // Kmongo database
     implementation("org.litote.kmongo:kmongo:$kmongo_version")
-    implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
+    implementation("org.litote.kmongo:kmongo-coroutine-core:$kmongo_version")
 
     // Commons Codec
     implementation("commons-codec:commons-codec:$commons_codec_version")
