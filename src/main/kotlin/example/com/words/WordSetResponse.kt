@@ -1,6 +1,6 @@
 package example.com.words
 
-import example.com.words.entity.WordSetSerializable
+import example.com.words.model.WordSetSerializable
 import kotlinx.serialization.Serializable
 
 @Serializable

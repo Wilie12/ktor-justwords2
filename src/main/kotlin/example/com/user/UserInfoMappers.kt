@@ -1,6 +1,6 @@
 package example.com.user
 
-import example.com.data.user.db.entity.UserInfo
+import example.com.user.data.db.entity.UserInfo
 import org.bson.types.ObjectId
 
 fun UserInfo.toUserInfoSerializable(): UserInfoSerializable {

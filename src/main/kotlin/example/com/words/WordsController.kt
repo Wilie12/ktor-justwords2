@@ -1,6 +1,6 @@
 package example.com.words
 
-import example.com.data.words.db.WordDataSource
+import example.com.words.data.db.WordDataSource
 import example.com.util.Error
 import example.com.util.Result
 

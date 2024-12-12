@@ -1,6 +1,6 @@
 package example.com.user.history
 
-import example.com.data.user.db.entity.UserWordHistory
+import example.com.user.data.db.entity.UserWordHistory
 import org.bson.types.ObjectId
 
 fun UserWordHistory.toUserWordHistorySerializable(): UserWordHistorySerializable {

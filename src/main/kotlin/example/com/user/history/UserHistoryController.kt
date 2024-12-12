@@ -1,8 +1,8 @@
 package example.com.user.history
 
-import example.com.data.user.db.UserDataSource
-import example.com.data.user.db.UserHistoryDataSource
-import example.com.data.user.db.entity.UserWordHistory
+import example.com.user.data.db.UserDataSource
+import example.com.user.data.db.UserHistoryDataSource
+import example.com.user.data.db.entity.UserWordHistory
 import example.com.util.DataError
 import example.com.util.EmptyResult
 import example.com.util.Result
