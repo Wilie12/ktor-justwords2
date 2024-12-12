@@ -1,6 +1,6 @@
 package example.com.user
 
-import example.com.data.user.db.UserDataSource
+import example.com.user.data.db.UserDataSource
 import example.com.util.DataError
 import example.com.util.EmptyResult
 import example.com.util.Result

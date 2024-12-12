@@ -1,7 +1,7 @@
 package example.com.plugins
 
-import example.com.data.user.token.TokenConfig
-import example.com.data.user.token.TokenService
+import example.com.user.data.token.TokenConfig
+import example.com.user.data.token.TokenService
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*

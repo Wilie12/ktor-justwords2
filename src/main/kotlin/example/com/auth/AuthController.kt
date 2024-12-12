@@ -1,14 +1,14 @@
 package example.com.auth
 
-import example.com.data.user.db.entity.User
-import example.com.data.user.db.UserDataSource
-import example.com.data.user.hashing.HashingService
-import example.com.data.user.hashing.SaltedHash
-import example.com.data.user.token.TokenClaim
-import example.com.data.user.token.TokenConfig
-import example.com.data.user.token.TokenService
-import example.com.data.user.token.refresh.RefreshTokenRepository
-import example.com.data.user.token.refresh.TokenUser
+import example.com.user.data.db.entity.User
+import example.com.user.data.db.UserDataSource
+import example.com.user.data.hashing.HashingService
+import example.com.user.data.hashing.SaltedHash
+import example.com.user.data.token.TokenClaim
+import example.com.user.data.token.TokenConfig
+import example.com.user.data.token.TokenService
+import example.com.user.data.token.refresh.RefreshTokenRepository
+import example.com.user.data.token.refresh.TokenUser
 import example.com.util.DataError
 import example.com.util.EmptyResult
 import example.com.util.Result
