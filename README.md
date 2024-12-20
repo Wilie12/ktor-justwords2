@@ -9,7 +9,7 @@ There are 4 main resources in JustWords2API:
 
 Note: In order to use API, you have to fetch previously created words database.
 ## How to prepare database
-API is designed to work with previously created database, it doesn't support creating new Words/Books/Wordsets.
+API is designed to work with previously created database, it doesn't support creating new Words/Books/Wordsets. Create Json files and insert them into MongoDB.
 ### Create a Book
 Book holds multiple WordSets.
 ```json
@@ -22,19 +22,23 @@ Note: API uses MongoDB, which autogenerates ObjectId.
 ### Create a WordSet
 Wordset holds multiple Words divided into groups.
 ```json
-"name": "Personality",
-"bookId": "6707f56059f9f0f47acb70e3",
-"numberOfGroups": 1
+{
+  "name": "Personality",
+  "bookId": "6707f56059f9f0f47acb70e3",
+  "numberOfGroups": 1
+}
 ```
 Note: BookId has to be previously generated ObjectId for Book.
 ### Create a Word
 Words are divided into groups, there can be multiple groups in one WordSet
 ```json
-"sentence": "She is an ambitious career woman.",
-"wordPl": "ambitny",
-"wordEng": "ambitious",
-"setId": "6707f58059f9f0f47acb70e6",
-"groupNumber": 1
+{
+  "sentence": "She is an ambitious career woman.",
+  "wordPl": "ambitny",
+  "wordEng": "ambitious",
+  "setId": "6707f58059f9f0f47acb70e6",
+  "groupNumber": 1
+}
 ```
 Note: SetId has to be previously generated ObjectId for WordSet.
 ### Explaination
