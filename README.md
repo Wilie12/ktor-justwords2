@@ -1,7 +1,7 @@
 # JustWords2API
 JustWords2API is a REST API, written in Kotlin with Ktor, it's serving learning words for my Android app [Get it here](https://github.com/Wilie12/JustWords2). API supports user authentication and its resources are restricted under JWT authorization.
 ## Resources
-There are 3 main resources in JustWords2API:
+There are 4 main resources in JustWords2API:
 - Auth
 - Words/Books/WordSets
 - UserInfo
